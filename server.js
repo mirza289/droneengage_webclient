@@ -5,31 +5,40 @@ const v_path    = require('path');
 // 'http2-express-bridge' is a work-around until express5 supports http2 correctly.
 // see: https://stackoverflow.com/questions/28639995/node-js-server-and-http-2-2-0-with-express-js
 const http2Express = require('http2-express-bridge'); 
-const http2 = require('http2')
+const http2 = require('http')
 
 
-const c_app   = http2Express(express);
+const c_app   = express();
 
 
-c_app.use(function(req, res, next) {
-    req.secure ? next() : res.redirect('https://' + req.headers.host + req.url)
-});
+// c_app.use(function(req, res, next) {
+//     req.secure ? next() : res.redirect('http://' + req.headers.host + req.url)
+// });
 
 const c_webport = 8001;
 c_app.set('port',c_webport);
 c_app.use(express.static(__dirname + '/'));
 
-const v_fs = require('fs');
-const v_keyFile = v_fs.readFileSync(v_path.join(__dirname,  "./ssl/localssl.key"));
-const v_certFile = v_fs.readFileSync(v_path.join(__dirname,  "./ssl/localssl.crt"));
+c_app.get('/api/data', (req, res) => {
+    const data = {
+      message: "Hello, this is data from the server!",
+      timestamp: new Date(),
+    };
+    res.json(data); // Send JSON response
+  });
+// const v_fs = require('fs');
+// const v_keyFile = v_fs.readFileSync(v_path.join(__dirname,  "./ssl/localssl.key"));
+// const v_certFile = v_fs.readFileSync(v_path.join(__dirname,  "./ssl/localssl.crt"));
 
-const v_options = {
-    key: v_keyFile,
-    cert: v_certFile,
-    allowHTTP1: true
-};
+// const v_options = {
+//     key: v_keyFile,
+//     cert: v_certFile,
+//     allowHTTP1: false
+// };
 
-const server = http2.createSecureServer(v_options, c_app).listen(c_app.get('port'))
+const v_options = {};
+
+const server = http2.createServer(v_options, c_app).listen(c_app.get('port'))
 
 
 console.log ("==============================================");

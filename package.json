@@ -18,7 +18,7 @@
   "license": "MIT",
   "dependencies": {
     "bootstrap-icons": "^1.8.1",
-    "express": ">=4.19.2",
+    "express": "^4.21.0",
     "express-favicon": "^2.0.1",
     "http2-express-bridge": "^1.0.7"
   }
