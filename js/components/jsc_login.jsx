@@ -28,21 +28,19 @@ export class CLSS_LoginControl extends React.Component {
 			btnConnectText: res_CLSS_LoginControl[window.AndruavLibs.LocalStorage.fn_getLanguage()]['1'],
 		};
 		this._isMounted = false;
-    	window.AndruavLibs.EventEmitter.fn_subscribe(EE_onSocketStatus, this, this.fn_onSocketStatus);
+		window.AndruavLibs.EventEmitter.fn_subscribe(EE_onSocketStatus, this, this.fn_onSocketStatus);
 	}
 
-	
+
 	fn_onSocketStatus(me, params) {
 		fn_console_log('REACT:' + JSON.stringify(params));
 
-		if (me._isMounted!==true) return ;
-    	if (params.status == CONST_SOCKET_STATUS_REGISTERED) {
+		if (me._isMounted !== true) return;
+		if (params.status == CONST_SOCKET_STATUS_REGISTERED) {
 			me.state.is_connected = true;
 			me.setState({ btnConnectText: res_CLSS_LoginControl[window.AndruavLibs.LocalStorage.fn_getLanguage()]['2'] });
 			me.state.username = $('#txtUnitID').val();
 			v_SpeakEngine.fn_speak('Connected');
-
-
 		}
 		else {
 
@@ -106,7 +104,7 @@ export class CLSS_LoginControl extends React.Component {
 
 	}
 
-	
+
 
 
 	render() {
@@ -118,7 +116,7 @@ export class CLSS_LoginControl extends React.Component {
 		}
 		if (this.props.simple == null) {
 			return (
-				<div key={'CLSS_LoginControl_simple'}  className="card text-white border-light mb-3" >
+				<div key={'CLSS_LoginControl_simple'} className="card text-white border-light mb-3" >
 					<div className="card-header  text-center"> <strong>{login}</strong></div>
 					<div id='login_form' className="card-body">
 						<div className={this.state.is_connected == true ? "hidden" : " "} >
@@ -131,7 +129,7 @@ export class CLSS_LoginControl extends React.Component {
 							<div className="form-group al_l">
 								<label htmlFor="txtUnitID" id="unitID" className="text-muted">GCS ID</label>
 								<input type="text" id="txtUnitID" name="txtUnitID" className="form-control" defaultValue={QueryString.unitName != null ? QueryString.unitName : window.AndruavLibs.LocalStorage.fn_getUnitID()} />
-								<input type="hidden" id="txtUnitID_ext" name="txtUnitID_ext" value={"_" + fn_generateRandomString(2)}/></div>
+								<input type="hidden" id="txtUnitID_ext" name="txtUnitID_ext" value={"_" + fn_generateRandomString(2)} /></div>
 							<br />
 						</div>
 						<div id='login_btn mb-2 ' className='text-center'>
@@ -165,23 +163,23 @@ export class CLSS_LoginControl extends React.Component {
 									<input type="text" id="txtGroupName" name="txtGroupName" className="form-control" defaultValue={QueryString.groupName != null ? QueryString.groupName : window.AndruavLibs.LocalStorage.fn_getGroupName()} />
 								</div>
 								<div className="form-group al_l">
-									<label htmlFor="txtUnitID"  id="unitID" className="text-muted">GCS ID</label>
+									<label htmlFor="txtUnitID" id="unitID" className="text-muted">GCS ID</label>
 									<input type="text" id="txtUnitID" name="txtUnitID" className="form-control" defaultValue={QueryString.unitName != null ? QueryString.unitName : window.AndruavLibs.LocalStorage.fn_getUnitID()} />
-									<input type="hidden" id="txtUnitID_ext" name="txtUnitID_ext" value={"_" + fn_generateRandomString(2)}/>
+									<input type="hidden" id="txtUnitID_ext" name="txtUnitID_ext" value={"_" + fn_generateRandomString(2)} />
 								</div>
 								<br />
 							</div>
 							<div id='login_btn mb-2 ' className='text-center'>
-							<div className={this.state.is_connected == false ? "hidden" : " "} >
-								<div className="form-group al_l"><label htmlFor="txtEmail" id="email" className="text-muted">Email</label>
-									<p>  {window.AndruavLibs.LocalStorage.fn_getEmail()} </p>
+								<div className={this.state.is_connected == false ? "hidden" : " "} >
+									<div className="form-group al_l"><label htmlFor="txtEmail" id="email" className="text-muted">Email</label>
+										<p>  {window.AndruavLibs.LocalStorage.fn_getEmail()} </p>
+									</div>
+									<div className="form-group al_l">
+										<label id="unitID" className="text-muted">GCS ID</label>
+										<p > {window.AndruavLibs.LocalStorage.fn_getUnitID()} </p>
+									</div>
 								</div>
-								<div className="form-group al_l">
-									<label  id="unitID" className="text-muted">GCS ID</label>
-									<p > {window.AndruavLibs.LocalStorage.fn_getUnitID()} </p>
-								</div>
-							</div>
-							<button className={"button  button_large  rounded-3 m-2 user-select-none " + (this.state.is_connected == false ? 'btn-success' : 'btn-danger')} id="btnConnect" title={this.state.username} onClick={(e) => this.clickConnect(e)}>{this.state.btnConnectText}</button>
+								<button className={"button  button_large  rounded-3 m-2 user-select-none " + (this.state.is_connected == false ? 'btn-success' : 'btn-danger')} id="btnConnect" title={this.state.username} onClick={(e) => this.clickConnect(e)}>{this.state.btnConnectText}</button>
 							</div>
 						</div>
 					</div>
@@ -201,21 +199,19 @@ export class CLSS_LoginControl extends React.Component {
 
 if ($('#login_div').length != 0) {
 
-	if (CONST_TEST_MODE === true)
-	{
+	if (CONST_TEST_MODE === true) {
 		ReactDOM.render(
 			<React.StrictMode>
-			<CLSS_LoginControl />
+				<CLSS_LoginControl />
 			</React.StrictMode>,
-			
+
 			window.document.getElementById('login_div')
 		);
 	}
-	else
-	{
+	else {
 		ReactDOM.render(
 			<CLSS_LoginControl />,
-			
+
 			window.document.getElementById('login_div')
 		);
 	}
