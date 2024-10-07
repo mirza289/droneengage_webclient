@@ -471,17 +471,28 @@ const getLocationData = async () => {
 
     // Handle the received data
     console.log('Location data:', data);
-    this.setState({ locationData: data });
+
+    let locData=[]
+    let i=0
+    for (let index = data.length-1; index > -1; index--) {
+      locData[i] = data[index];
+      i=i+1;
+    }
+
+    console.log(locData)
+    this.setState({ locationData: locData });
 
     // Example: Update the UI or state with the data
     // setLatitude(data.latitude); 
     // setLongitude(data.longitude);
-
+    setTimeout(() => {
+      getLocationData()
+    }, 3000);
   } catch (error) {
     // Handle any errors that occurred during the fetch
     console.error('Error fetching location data:', error);
   }
-};
+}
 
 const setCurrentLocation=(location)=>{
   this.setState({currentLocation:location})
@@ -514,7 +525,7 @@ const setCurrentLocation=(location)=>{
           <div  style={{height:"20vh", overflowY:"auto", overflowX:"hidden"}}>
             {this.state.locationData.length !==0 &&
             this.state.locationData.map((data,i)=>(
-          <div className="location-data" style={{marginTop:"10px"}} key={i} >
+          <div className="location-data" style={{marginTop:"10px", backgroundColor: i === 0?"green":"", padding:'5px'}} key={i} >
             <div className="row mb-2">
               <div className="col col-lg-2">
                 <strong>{data.emergency}</strong>
