@@ -511,7 +511,7 @@ const setCurrentLocation=(location)=>{
               </div>
             </div>
             </div>
-          <div>
+          <div  style={{height:"20vh", overflowY:"auto", overflowX:"hidden"}}>
             {this.state.locationData.length !==0 &&
             this.state.locationData.map((data,i)=>(
           <div className="location-data" style={{marginTop:"10px"}} key={i} >
