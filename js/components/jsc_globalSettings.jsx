@@ -517,7 +517,7 @@ const setCurrentLocation=(location)=>{
               <div className="col col-lg-3">
                 <strong>Caller Id</strong>
               </div>
-              <div className="col">
+              <div className="col col-lg-6">
                 <strong>Location</strong>
               </div>
             </div>
@@ -530,11 +530,11 @@ const setCurrentLocation=(location)=>{
               <div className="col col-lg-3">
                 <strong>{data.emergency}</strong>
               </div>
-              <div className="col">
+              <div className="col col-lg-5">
                 <strong>{data.location.coords.latitude +" "+ data.location.coords.longitude}</strong>
               </div>
               <div className="col">
-              <button className="btn btn-primary btn-sm" type="button" style={{marginTop:"5px", marginLeft:"10px"}} onClick={()=>setCurrentLocation(data.location.coords.latitude +","+ data.location.coords.longitude)} >Set Location</button>
+              <button className="btn btn-info btn-sm" type="button" style={{marginTop:"5px", marginLeft:"10px", fontSize:"12px"}} onClick={()=>setCurrentLocation(data.location.coords.latitude +","+ data.location.coords.longitude)} >Set Location</button>
               </div>
             </div>
             </div>
