@@ -501,7 +501,7 @@ const setCurrentLocation=(location)=>{
      <div key='g1' className="row margin_zero">
             <div className="card text-white  border-light mb-3 padding_zero" >
     <div className="card-header  text-center user-select-none"> <strong>Settings</strong></div>
-    <div className="card-body">
+    <div className="card-body" style={{fontSize:"14px"}}>
           {/* Here is where the input field for lat/lng and the copy button will be added */}
           <div className="form-inline">
             <div className="form-group">
@@ -522,7 +522,7 @@ const setCurrentLocation=(location)=>{
               </div>
             </div>
             </div>
-          <div  style={{height:"20vh", overflowY:"auto", overflowX:"hidden"}}>
+          <div  style={{maxHeight:"20vh", overflowY:"auto", overflowX:"hidden"}}>
             {this.state.locationData.length !==0 &&
             this.state.locationData.map((data,i)=>(
           <div className="location-data" style={{marginTop:"10px", backgroundColor: i === 0?"green":"", padding:'5px'}} key={i} >
