@@ -514,7 +514,7 @@ const setCurrentLocation=(location)=>{
           </div>
           <div className="location-data" style={{marginTop:"10px"}}>
             <div className="row mb-2">
-              <div className="col col-lg-2">
+              <div className="col col-lg-3">
                 <strong>Caller Id</strong>
               </div>
               <div className="col">
@@ -527,7 +527,7 @@ const setCurrentLocation=(location)=>{
             this.state.locationData.map((data,i)=>(
           <div className="location-data" style={{marginTop:"10px", backgroundColor: i === 0?"green":"", padding:'5px'}} key={i} >
             <div className="row mb-2">
-              <div className="col col-lg-2">
+              <div className="col col-lg-3">
                 <strong>{data.emergency}</strong>
               </div>
               <div className="col">
