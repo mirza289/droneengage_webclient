@@ -271,7 +271,9 @@ class CLSS_GlobalSettings extends React.Component {
 		    m_unitText: 'm',
         CONST_DEFAULT_ALTITUDE:CONST_DEFAULT_ALTITUDE,
         CONST_DEFAULT_RADIUS:CONST_DEFAULT_RADIUS,
-		    'm_update': 0
+		    'm_update': 0,
+        locationData: [],
+        currentLocation:""
 		};
 
     this._isMounted = false;
@@ -403,7 +405,7 @@ class CLSS_GlobalSettings extends React.Component {
                   <div className="form-inline">
                     <div className="form-group">
                         <div>
-                          <label htmlFor="txt_defaultCircle" className="user-select-none text-white txt_label_width"><small>Radius</small></label>
+                          <label htmlFor="txt_defaultCircle" className="user-select-none text-white txt_label_width"><small></small></label>
                           <input id="txt_defaultCircle" type="number" min={parseInt(CONST_DEFAULT_RADIUS_min)} className="form-control input-xs input-sm"  onChange={(e) => this.onChange(e)}  value={this.state.CONST_DEFAULT_RADIUS}/>
                           <button id="btn_defaultCircle" className="btn btn-secondary btn-sm" type="button"  onClick={ (e) => this.clickToggleUnit(e) }>{this.state.m_unitText}</button>
                         </div>
@@ -437,12 +439,108 @@ class CLSS_GlobalSettings extends React.Component {
     { // no permission
       cls_ctrl_wp = ' hidden disabled ';
     }
-        
+     
+    const copyToClipboard = (e) => {
+      const latLngText = document.getElementById("lat_lng_display").value;
+      navigator.clipboard.writeText(latLngText).then(() => {
+        alert("Latitude and Longitude copied to clipboard!");
+      }).catch(err => {
+        alert("Failed to copy: ", err);
+      });
+    }
+// https://103.164.9.58:19408/app/location
+
+
   
+const getLocationData = async () => {
+  try {
+    // Make the GET request to the server
+    const response = await fetch('http://103.164.9.58:19408/app/location', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json', // Set the content type
+      }
+    });
+
+
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+
+    const data = await response.json();
+
+    // Handle the received data
+    console.log('Location data:', data);
+
+    let locData=[]
+    let i=0
+    for (let index = data.length-1; index > -1; index--) {
+      locData[i] = data[index];
+      i=i+1;
+    }
+
+    console.log(locData)
+    this.setState({ locationData: locData });
+
+    // Example: Update the UI or state with the data
+    // setLatitude(data.latitude); 
+    // setLongitude(data.longitude);
+    setTimeout(() => {
+      getLocationData()
+    }, 3000);
+  } catch (error) {
+    // Handle any errors that occurred during the fetch
+    console.error('Error fetching location data:', error);
+  }
+}
+
+const setCurrentLocation=(location)=>{
+  this.setState({currentLocation:location})
+}
   return (
      <div key='g1' className="row margin_zero">
             <div className="card text-white  border-light mb-3 padding_zero" >
     <div className="card-header  text-center user-select-none"> <strong>Settings</strong></div>
+    <div className="card-body" style={{fontSize:"14px"}}>
+          {/* Here is where the input field for lat/lng and the copy button will be added */}
+          <div className="form-inline">
+            <div className="form-group">
+            <label htmlFor="lat_lng_display" className="text-white">Emergency Location</label><br/>
+              <label htmlFor="lat_lng_display" className="text-white"><small> Lat/Lng&nbsp;Display:</small></label>
+              <input id="lat_lng_display" type="text" className="form-control input-sm mx-2" value={this.state.currentLocation} readOnly />
+              <button className="btn btn-secondary btn-sm" type="button" style={{marginTop:"5px", marginLeft:"10px"}} onClick={copyToClipboard}>Copy</button>
+              <button className="btn btn-secondary btn-sm" type="button" style={{marginTop:"5px", marginLeft:"10px"}} onClick={getLocationData}>Get Location</button>
+            </div>
+          </div>
+          <div className="location-data" style={{marginTop:"10px"}}>
+            <div className="row mb-2">
+              <div className="col col-lg-3">
+                <strong>Caller Id</strong>
+              </div>
+              <div className="col col-lg-6">
+                <strong>Location</strong>
+              </div>
+            </div>
+            </div>
+          <div  style={{maxHeight:"20vh", overflowY:"auto", overflowX:"hidden"}}>
+            {this.state.locationData.length !==0 &&
+            this.state.locationData.map((data,i)=>(
+          <div className="location-data" style={{marginTop:"10px", backgroundColor: i === 0?"green":"", padding:'5px'}} key={i} >
+            <div className="row mb-2">
+              <div className="col col-lg-3">
+                <strong>{data.emergency}</strong>
+              </div>
+              <div className="col col-lg-5">
+                <strong>{data.location.coords.latitude +" "+ data.location.coords.longitude}</strong>
+              </div>
+              <div className="col">
+              <button className="btn btn-info btn-sm" type="button" style={{marginTop:"5px", marginLeft:"10px", fontSize:"12px"}} onClick={()=>setCurrentLocation(data.location.coords.latitude +","+ data.location.coords.longitude)} >Set Location</button>
+              </div>
+            </div>
+            </div>
+            ))}
+          </div>
+     </div>
     <div className="card-body">
                 <ul className="nav nav-tabs">
                     <li className="nav-item">
@@ -469,14 +567,9 @@ class CLSS_GlobalSettings extends React.Component {
                       <CLSS_Preferences/>
                     </div>
                 </div>
-            
-            
-
-            
-
-           
-            
-            </div></div></div>
+     </div>
+     </div>
+    </div>
     );
   }
 };

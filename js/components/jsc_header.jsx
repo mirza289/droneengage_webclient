@@ -19,22 +19,7 @@ class CLSS_HeaderControl extends React.Component {
                         <div className="collapse navbar-collapse" id="navbarNav">
                             <ul className="navbar-nav">
                                 <li key="Home" className="nav-item active">
-                                    <a className="nav-link" href={CONST_HOME_URL}>Home </a>
-                                </li>
-                                <li key="Geo" className="nav-item">
-                                    <a className="nav-link" id='mapeditor' href="./mapeditor.html" target='_blank'>Geo Fence</a>
-                                </li>
-                                <li key="Manual" className="nav-item">
-                                    <a className="nav-link" href={CONST_MANUAL_URL} target='_blank' >Manual</a>
-                                </li>
-                                <li key="FAQ" className="nav-item">
-                                    <a className="nav-link" href={CONST_FAQ_URL} target='_blank' >FAQ</a>
-                                </li>
-                                <li key="Contact" className="nav-item">
-                                    <a className="nav-link" href={CONST_CONTACT_URL} target='_blank' >Contact</a>
-                                </li>
-                                <li className="nav-item text-warning">
-                                    <a className="nav-link" href={CONST_APK_DOWNLOAD} target='_blank' ><span className='text-warning'>AndruavAP APK</span></a>
+                                    <a className="nav-link" href={"https://khazanapk.com/"}>Home </a>
                                 </li>
                                 <li key="Account" className="nav-item">
                                     <a className="nav-link" href="accounts.html" target='_blank' >Account</a>
