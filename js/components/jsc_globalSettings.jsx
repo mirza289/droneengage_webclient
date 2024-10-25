@@ -504,6 +504,13 @@ const setCurrentLocation=(location)=>{
 }
 
 
+const handleSetLocationDetails =(location)=>{
+  
+  this.state({latitude:location.latitude})
+  this.state({longitude:location.longitude})
+  setCurrentLocation(location.latitude +":"+ location.longitude)
+}
+
 const handleAltitude=(altitude)=>{
   this.setState({altitude:altitude})
 }
@@ -602,7 +609,7 @@ const handleDelay=(time)=>{
                 <strong>{data.location.coords.latitude +" "+ data.location.coords.longitude}</strong>
               </div>
               <div className="col">
-              <button className="btn btn-info btn-sm" type="button" style={{marginTop:"5px", marginLeft:"10px", fontSize:"12px"}} onClick={()=>setCurrentLocation(data.location.coords.latitude +","+ data.location.coords.longitude)} >Set Location</button>
+              <button className="btn btn-info btn-sm" type="button" style={{marginTop:"5px", marginLeft:"10px", fontSize:"12px"}} onClick={()=>handleSetLocationDetails(data.location.coords)} >Set Location</button>
               </div>
             </div>
             </div>
