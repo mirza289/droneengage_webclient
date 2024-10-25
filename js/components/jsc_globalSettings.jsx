@@ -505,10 +505,11 @@ const setCurrentLocation=(location)=>{
 
 
 const handleSetLocationDetails =(location)=>{
-  
+
+  alert(JSON.stringify(location))
+  setCurrentLocation(location.latitude +":"+ location.longitude)
   this.state({latitude:location.latitude})
   this.state({longitude:location.longitude})
-  setCurrentLocation(location.latitude +":"+ location.longitude)
 }
 
 const handleAltitude=(altitude)=>{
