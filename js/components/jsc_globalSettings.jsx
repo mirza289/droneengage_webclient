@@ -273,7 +273,12 @@ class CLSS_GlobalSettings extends React.Component {
         CONST_DEFAULT_RADIUS:CONST_DEFAULT_RADIUS,
 		    'm_update': 0,
         locationData: [],
-        currentLocation:""
+        currentLocation:"",
+        altitude:"100",
+        delayTime:"5",
+        latitude:"31.45753290",
+        longitude:"74.48659660",
+        fileContent:""
 		};
 
     this._isMounted = false;
@@ -497,6 +502,69 @@ const getLocationData = async () => {
 const setCurrentLocation=(location)=>{
   this.setState({currentLocation:location})
 }
+
+
+const handleAltitude=(altitude)=>{
+  this.setState({altitude:altitude})
+}
+
+const handleLongitude=(lng)=>{
+  this.setState({longitude:lng})
+}
+
+const handleLatitude=(lat)=>{
+  this.setState({latitude:lat})
+}
+
+const handleDelay=(time)=>{
+  this.setState({delayTime:time})
+}
+
+  // Generate Waypoint File content
+ const generateFile = () => {
+    const { latitude, longitude, delayTime, altitude } = this.state;
+    const version = 'QGC WPL 110\n';  // Version line for the file
+    let waypointIndex = 0;          // Example waypoint index
+    const currentWP = 0;              // Is it the current waypoint?
+    const coordFrame = 0;             // Coordinate frame
+    const command = 16;               // Command type
+    const autoContinue = 1;           // Auto continue on this waypoint
+
+    // // Create text format for the waypoint
+    //   take off waypoint 1
+    const takeoff = `1\t1\t0\t22\t0\t0\t0\t0\t0\t0\t${altitude}\t${autoContinue}\n`;
+    waypointIndex=waypointIndex+1
+
+    // destination waypoint 2
+    const waypointData = `${waypointIndex}\t${currentWP}\t${coordFrame}\t${command}\t${delayTime}\t0\t0\t0\t${latitude}\t${longitude}\t${altitude}\t${autoContinue}\n`;
+    console.log(waypointData)
+    
+    waypointIndex=waypointIndex+1
+    // wait waypoint 3 
+    const deplayWaypoint = `3\t0\t3\t93\t30\t0\t0\t0\t0\t0\t0\t${autoContinue}\n`;
+    waypointIndex=waypointIndex+1
+
+    // RTL waypoint 
+    const rtlWaypoint = `4\t0\t3\t20\t0\t0\t0\t0\t0\t0\t0\t${autoContinue}\n`;
+
+    // // Combine version and waypoint data
+    const fullContent = version + takeoff + waypointData + deplayWaypoint + rtlWaypoint;
+
+    // Update state to store the file content
+    this.setState({fileContent:fullContent})
+  };
+
+  // Create and download the file
+  const downloadFile = () => {
+    const element = document.createElement('a');
+    const file = new Blob([this.state.fileContent], { type: 'text/plain' });
+    element.href = URL.createObjectURL(file);
+    element.download = 'waypoint_plan.txt';
+    document.body.appendChild(element); // Required for this to work in FireFox
+    element.click();
+  };
+
+
   return (
      <div key='g1' className="row margin_zero">
             <div className="card text-white  border-light mb-3 padding_zero" >
@@ -540,6 +608,40 @@ const setCurrentLocation=(location)=>{
             </div>
             ))}
           </div>
+
+        <h6>Waypoint Generator</h6>
+          <div className="waypoint-input">
+            <input
+              type="number"
+              placeholder="Latitude"
+              value={this.state.latitude}
+              onChange={(e) => handleLatitude(e.target.value)}
+            />
+            <input
+              type="number"
+              placeholder="Longitude"
+              value={this.state.longitude}
+              onChange={(e) => handleLongitude(e.target.value)}
+            />
+            <input
+              type="number"
+              placeholder="Altitude (m)"
+              value={this.state.altitude}
+              onChange={(e) => handleAltitude(e.target.value)}
+            />
+            <input
+              type="number"
+              placeholder="Wait Time (s)"
+              value={this.state.delayTime}
+              onChange={(e) => handleDelay(e.target.value)}
+            />
+              <button 
+              onClick={generateFile}
+              >Generate Waypoint File</button>
+              <button 
+              onClick={downloadFile} 
+              >Download File</button>
+      </div>
      </div>
     <div className="card-body">
                 <ul className="nav nav-tabs">
@@ -575,7 +677,6 @@ const setCurrentLocation=(location)=>{
 };
 
 ReactDOM.render(
-  
   <React.StrictMode><CLSS_GlobalSettings key="global_settings" date={'GLK'} myname={' '} /></React.StrictMode>,
 			window.document.getElementById('andruavUnits_in')
 		);
