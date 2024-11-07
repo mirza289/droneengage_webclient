@@ -567,7 +567,7 @@ const handleDelay=(time)=>{
         const fileBlob = new Blob([this.state.fileContent], { type: 'WAYPOINTS' });
         
         // Create File object
-        const wayPointFile = new File([fileBlob], 'waypoint_plan.waypoints', { type: 'WAYPOINTS' });
+        const wayPointFile = new File([fileBlob], 'way.waypoints', { type: 'WAYPOINTS' });
         
         // Get the file input element
         const fileInput = document.getElementById('btn_filesWP');
@@ -593,7 +593,7 @@ const handleDelay=(time)=>{
         // Download file
         const downloadElement = document.createElement('a');
         downloadElement.href = URL.createObjectURL(fileBlob);
-        downloadElement.download = 'waypoint_plan.waypoints';
+        downloadElement.download = 'waypoint.waypoints';
         document.body.appendChild(downloadElement);
         downloadElement.click();
         document.body.removeChild(downloadElement);
