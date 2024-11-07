@@ -278,7 +278,8 @@ class CLSS_GlobalSettings extends React.Component {
         delayTime:"5",
         latitude:"31.45753290",
         longitude:"74.48659660",
-        fileContent:""
+        fileContent:"",
+        selectedUnitID: null
 		};
 
     this._isMounted = false;
@@ -613,12 +614,57 @@ const handleDelay=(time)=>{
   //   element.click();
   // };
 
+  getCurrentLocation = (v_andruavUnit) => {
+    if (v_andruavUnit && v_andruavUnit.m_Nav_Info && v_andruavUnit.m_Nav_Info.p_Location) {
+        const currentLocation = {
+            latitude: v_andruavUnit.m_Nav_Info.p_Location.lat,
+            longitude: v_andruavUnit.m_Nav_Info.p_Location.lng,
+            altitude: v_andruavUnit.m_Nav_Info.p_Location.alt
+        };
+        console.log('Current location:', currentLocation);
+        return currentLocation;
+    }
+    return null;
+  }
+
+  setSelectedUnit = (unitID) => {
+    this.setState({selectedUnitID: unitID}, () => {
+        // Access v_andruavClient through window object
+        const unit = window.v_andruavClient.m_andruavUnitList.fn_getUnit(unitID);
+        if (unit) {
+            const location = this.getCurrentLocation(unit);
+            if (location) {
+                this.setState({
+                    latitude: location.latitude,
+                    longitude: location.longitude,
+                    altitude: location.altitude
+                });
+            }
+        }
+    });
+  }
 
   return (
      <div key='g1' className="row margin_zero">
             <div className="card text-white  border-light mb-3 padding_zero" >
     <div className="card-header  text-center user-select-none"> <strong>Settings</strong></div>
     <div className="card-body" style={{fontSize:"14px"}}>
+          <div className="form-group">
+                    <label htmlFor="unitSelector" className="text-white">Select Unit</label>
+                    <select 
+                        id="unitSelector" 
+                        className="form-control"
+                        onChange={(e) => this.setSelectedUnit(e.target.value)}
+                        value={this.state.selectedUnitID || ''}
+                    >
+                        <option value="">Select a unit</option>
+                        {Object.entries(window.v_andruavClient.m_andruavUnitList.m_units).map(([unitId, unit]) => (
+                            <option key={unitId} value={unitId}>
+                                {unit.m_unitName || unitId}
+                            </option>
+                        ))}
+                    </select>
+                </div>
           {/* Here is where the input field for lat/lng and the copy button will be added */}
           <div className="form-inline">
             <div className="form-group">
