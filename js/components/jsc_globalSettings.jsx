@@ -560,15 +560,41 @@ const handleDelay=(time)=>{
     this.setState({fileContent:fullContent})
   };
 
-  // Create and download the file
+  // // Create and download the file
   const downloadFile = () => {
-    const element = document.createElement('a');
-    const file = new Blob([this.state.fileContent], { type: 'text/plain' });
-    element.href = URL.createObjectURL(file);
-    element.download = 'waypoint_plan.txt';
-    document.body.appendChild(element); // Required for this to work in FireFox
-    element.click();
-  };
+    try {
+        const element = document.createElement('a');
+        const file = new Blob([this.state.fileContent], { type: 'text/plain' });
+        
+        const waypointInput = document.getElementById('btn_filesWP');
+        if (waypointInput) {
+            try {
+                const wayPointFile = new File([file], 'waypoint_plan.txt', { type: 'text/plain' });
+                const dataTransfer = new DataTransfer();
+                dataTransfer.items.add(wayPointFile);
+                waypointInput.files = dataTransfer.files;
+            } catch (err) {
+                console.warn('Unable to set waypoint file programmatically:', err);
+                // Fall back to just downloading the file
+            }
+        }
+
+        element.href = URL.createObjectURL(file);
+        element.download = 'waypoint_plan.txt';
+        document.body.appendChild(element);
+        element.click();
+    } catch (err) {
+        console.error('Error downloading waypoint file:', err);
+    }
+}
+  // const downloadFile = () => {
+  //   const element = document.createElement('a');
+  //   const file = new Blob([this.state.fileContent], { type: 'text/plain' });
+  //   element.href = URL.createObjectURL(file);
+  //   element.download = 'waypoint_plan.txt';
+  //   document.body.appendChild(element); // Required for this to work in FireFox
+  //   element.click();
+  // };
 
 
   return (
