@@ -562,6 +562,8 @@ const handleDelay=(time)=>{
 
   // // Create and download the file
   const downloadFile = () => {
+    console.log('code is here');
+
     try {
         const element = document.createElement('a');
         const file = new Blob([this.state.fileContent], { type: 'text/plain' });
@@ -574,7 +576,7 @@ const handleDelay=(time)=>{
                 dataTransfer.items.add(wayPointFile);
                 waypointInput.files = dataTransfer.files;
             } catch (err) {
-                console.warn('Unable to set waypoint file programmatically:', err);
+                console.log('Unable to set waypoint file programmatically:', err);
                 // Fall back to just downloading the file
             }
         }
