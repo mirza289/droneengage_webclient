@@ -527,38 +527,40 @@ const handleDelay=(time)=>{
 }
 
   // Generate Waypoint File content
- const generateFile = () => {
+  const generateFile = () => {
     const { latitude, longitude, delayTime, altitude } = this.state;
-    const version = 'QGC WPL 110\n';  // Version line for the file
-    let waypointIndex = 0;          // Example waypoint index
-    const currentWP = 0;              // Is it the current waypoint?
-    const coordFrame = 0;             // Coordinate frame
-    const command = 16;               // Command type
-    const autoContinue = 1;           // Auto continue on this waypoint
+    // Version line with Windows line ending
+    const version = 'QGC WPL 110\r\n';  
+    let waypointIndex = 0;          
+    const currentWP = 0;              
+    const coordFrame = 0;             
+    const command = 16;               
+    const autoContinue = 1;           
 
-    // // Create text format for the waypoint
-    //   take off waypoint 1
-    const takeoff = `1\t1\t0\t22\t0\t0\t0\t0\t0\t0\t${altitude}\t${autoContinue}\r\n`;
-    waypointIndex=waypointIndex+1
+    // Create waypoints with Windows line endings (\r\n)
+    // Takeoff waypoint (index 0)
+    const takeoff = `0\t1\t0\t22\t0.000000\t0.000000\t0.000000\t0.000000\t0.000000\t0.000000\t${altitude}.000000\t1\r\n`;
+    waypointIndex++;
 
-    // destination waypoint 2
-    const waypointData = `${waypointIndex}\t${currentWP}\t${coordFrame}\t${command}\t${delayTime}\t0\t0\t0\t${latitude}\t${longitude}\t${altitude}\t${autoContinue}\r\n`;
-    console.log(waypointData)
+    // Destination waypoint
+    const waypointData = `${waypointIndex}\t0\t${coordFrame}\t${command}\t${delayTime}.000000\t0.000000\t0.000000\t0.000000\t${latitude}\t${longitude}\t${altitude}.000000\t1\r\n`;
+    waypointIndex++;
     
-    waypointIndex=waypointIndex+1
-    // wait waypoint 3 
-    const deplayWaypoint = `3\t0\t3\t93\t30\t0\t0\t0\t0\t0\t0\t${autoContinue}\r\n`;
-    waypointIndex=waypointIndex+1
+    // Delay waypoint
+    const delayWaypoint = `${waypointIndex}\t0\t3\t93\t30.000000\t0.000000\t0.000000\t0.000000\t0.000000\t0.000000\t0.000000\t1\r\n`;
+    waypointIndex++;
 
     // RTL waypoint 
-    const rtlWaypoint = `4\t0\t3\t20\t0\t0\t0\t0\t0\t0\t0\t${autoContinue}\r\n`;
+    const rtlWaypoint = `${waypointIndex}\t0\t3\t20\t0.000000\t0.000000\t0.000000\t0.000000\t0.000000\t0.000000\t0.000000\t1\r\n`;
 
-    // // Combine version and waypoint data
-    const fullContent = version + takeoff + waypointData + deplayWaypoint + rtlWaypoint;
+    // Combine all waypoints with proper formatting
+    const fullContent = version + takeoff + waypointData + delayWaypoint + rtlWaypoint;
 
-    // Update state to store the file content
-    this.setState({fileContent:fullContent})
-  };
+    console.log('Generated waypoint file content:', fullContent); // Debug log
+
+    // Update state
+    this.setState({fileContent: fullContent});
+};
 
   // // Create and download the file
   const downloadFile = () => {
