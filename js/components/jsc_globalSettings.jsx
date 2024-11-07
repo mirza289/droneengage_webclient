@@ -564,10 +564,10 @@ const handleDelay=(time)=>{
   const downloadFile = () => {
     try {
         // Create file content as Blob
-        const fileBlob = new Blob([this.state.fileContent], { type: 'WAYPOINTS' });
+        const fileBlob = new Blob([this.state.fileContent], { type: "" });
         
         // Create File object
-        const wayPointFile = new File([fileBlob], 'way.waypoints', { type: 'WAYPOINTS' });
+        const wayPointFile = new File([fileBlob], "way.waypoints", { type: "" });
         
         // Get the file input element
         const fileInput = document.getElementById('btn_filesWP');
