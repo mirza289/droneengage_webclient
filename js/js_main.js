@@ -1781,14 +1781,14 @@ function fn_handleKeyBoard() {
 		
 			// Check andruavUnit
 			if (p_andruavUnit == null) {
-				console.error('andruavUnit is null');
+				console.log('andruavUnit is null');
 				return;
 			}
 			console.log('andruavUnit:', p_andruavUnit);
 		
 			// Check files length
 			if (!files || !files.length) {
-				console.error('No files selected');
+				console.log('No files selected');
 				alert('Please select a file!');
 				return;
 			}
@@ -1805,7 +1805,7 @@ function fn_handleKeyBoard() {
 		
 			// Add error handler
 			reader.onerror = function(error) {
-				console.error('Error reading file:', error);
+				console.log('Error reading file:', error);
 			};
 		
 			// Add load start handler
@@ -1831,14 +1831,14 @@ function fn_handleKeyBoard() {
 						console.log('Calling API_uploadWayPoints');
 						v_andruavClient.API_uploadWayPoints(p_andruavUnit, p_eraseFirst, evt.target.result);
 					} else {
-						console.error('v_andruavClient is null in onloadend');
+						console.log('v_andruavClient is null in onloadend');
 					}
 				}
 			};
 		
 			// Check v_andruavClient before starting read
 			if (v_andruavClient == null) {
-				console.error('v_andruavClient is null, aborting read');
+				console.log('v_andruavClient is null, aborting read');
 				return;
 			}
 		
@@ -1847,7 +1847,7 @@ function fn_handleKeyBoard() {
 				console.log('Starting file read');
 				reader.readAsBinaryString(file);
 			} catch (error) {
-				console.error('Error initiating file read:', error);
+				console.log('Error initiating file read:', error);
 			}
 		}
 
