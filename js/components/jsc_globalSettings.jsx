@@ -572,19 +572,25 @@ const handleDelay=(time)=>{
         // Get the file input element
         const fileInput = document.getElementById('btn_filesWP');
         if (fileInput) {
-            // Create DataTransfer object to create FileList
+            // Create DataTransfer object
             const dataTransfer = new DataTransfer();
             dataTransfer.items.add(wayPointFile);
             
-            // Set the files property of input element
+            // Update the files property
             fileInput.files = dataTransfer.files;
+
+            // Trigger change event to ensure listeners are notified
+            const event = new Event('change', { bubbles: true });
+            fileInput.dispatchEvent(event);
             
-            console.log('File attached to input:', fileInput.files); // Debug log
-        } else {
-            console.error('Could not find element with ID btn_filesWP');
+            // Verify update
+            console.log('File input updated:', fileInput.files[0].name);
+            
+            // Store file content in a data attribute for later access
+            fileInput.setAttribute('data-file-content', this.state.fileContent);
         }
 
-        // Download file as before
+        // Download file
         const downloadElement = document.createElement('a');
         downloadElement.href = URL.createObjectURL(fileBlob);
         downloadElement.download = 'waypoint_plan.txt';

@@ -1769,29 +1769,86 @@ function fn_handleKeyBoard() {
 
 
 		function fn_putWayPoints(p_andruavUnit, p_eraseFirst) {
-
-			var files = window.document.getElementById('btn_filesWP').files;
-			if (p_andruavUnit == null) return ;
-
-			if (!files.length) {
+			console.log('fn_putWayPoints started');
+		
+			// Get file input element and log its state
+			const fileInput = window.document.getElementById('btn_filesWP');
+			console.log('File input element:', fileInput);
+			console.log('File input files:', fileInput ? fileInput.files : 'No input element');
+		
+			var files = fileInput ? fileInput.files : null;
+			console.log('Files object:', files);
+		
+			// Check andruavUnit
+			if (p_andruavUnit == null) {
+				console.error('andruavUnit is null');
+				return;
+			}
+			console.log('andruavUnit:', p_andruavUnit);
+		
+			// Check files length
+			if (!files || !files.length) {
+				console.error('No files selected');
 				alert('Please select a file!');
 				return;
 			}
-
+		
 			var file = files[0];
-
+			console.log('Selected file:', {
+				name: file.name,
+				size: file.size,
+				type: file.type,
+				lastModified: file.lastModified
+			});
+		
 			var reader = new FileReader();
-
-			// If we use onloadend, we need to check the readyState.
-			reader.onloadend = function (evt) {
-				if (evt.target.readyState == FileReader.DONE) { // DONE == 2
-					v_andruavClient.API_uploadWayPoints(p_andruavUnit, p_eraseFirst, evt.target.result);
+		
+			// Add error handler
+			reader.onerror = function(error) {
+				console.error('Error reading file:', error);
+			};
+		
+			// Add load start handler
+			reader.onloadstart = function(event) {
+				console.log('File reading started');
+			};
+		
+			// Add progress handler
+			reader.onprogress = function(event) {
+				if (event.lengthComputable) {
+					console.log(`Read progress: ${event.loaded}/${event.total}`);
 				}
 			};
-
-			if (v_andruavClient == null) return;
-
-			reader.readAsBinaryString(file);
+		
+			// If we use onloadend, we need to check the readyState.
+			reader.onloadend = function (evt) {
+				console.log('File read completed, readyState:', evt.target.readyState);
+				if (evt.target.readyState == FileReader.DONE) { // DONE == 2
+					console.log('File content length:', evt.target.result.length);
+					console.log('First 100 chars of content:', evt.target.result.substring(0, 100));
+					
+					if (v_andruavClient) {
+						console.log('Calling API_uploadWayPoints');
+						v_andruavClient.API_uploadWayPoints(p_andruavUnit, p_eraseFirst, evt.target.result);
+					} else {
+						console.error('v_andruavClient is null in onloadend');
+					}
+				}
+			};
+		
+			// Check v_andruavClient before starting read
+			if (v_andruavClient == null) {
+				console.error('v_andruavClient is null, aborting read');
+				return;
+			}
+		
+			// Start reading file
+			try {
+				console.log('Starting file read');
+				reader.readAsBinaryString(file);
+			} catch (error) {
+				console.error('Error initiating file read:', error);
+			}
 		}
 
 
