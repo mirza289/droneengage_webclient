@@ -593,7 +593,7 @@ const handleDelay=(time)=>{
         // Download file
         const downloadElement = document.createElement('a');
         downloadElement.href = URL.createObjectURL(fileBlob);
-        downloadElement.download = 'waypoint_plan.txt';
+        downloadElement.download = 'waypoint_plan.waypoints';
         document.body.appendChild(downloadElement);
         downloadElement.click();
         document.body.removeChild(downloadElement);
