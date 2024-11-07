@@ -561,55 +561,55 @@ const handleDelay=(time)=>{
   };
 
   // // Create and download the file
+//   const downloadFile = () => {
+//     try {
+//         // Create file content as Blob
+//         const fileBlob = new Blob([this.state.fileContent], { type: 'text/plain' });
+        
+//         // Create File object
+//         const wayPointFile = new File([fileBlob], 'waypoint_plan.txt', { type: 'text/plain' });
+        
+//         // Get the file input element
+//         const fileInput = document.getElementById('btn_filesWP');
+//         if (fileInput) {
+//             // Create DataTransfer object
+//             const dataTransfer = new DataTransfer();
+//             dataTransfer.items.add(wayPointFile);
+            
+//             // Update the files property
+//             fileInput.files = dataTransfer.files;
+
+//             // Trigger change event to ensure listeners are notified
+//             const event = new Event('change', { bubbles: true });
+//             fileInput.dispatchEvent(event);
+            
+//             // Verify update
+//             console.log('File input updated:', fileInput.files[0].name);
+            
+//             // Store file content in a data attribute for later access
+//             fileInput.setAttribute('data-file-content', this.state.fileContent);
+//         }
+
+//         // Download file
+//         const downloadElement = document.createElement('a');
+//         downloadElement.href = URL.createObjectURL(fileBlob);
+//         downloadElement.download = 'waypoint_plan.txt';
+//         document.body.appendChild(downloadElement);
+//         downloadElement.click();
+//         document.body.removeChild(downloadElement);
+
+//     } catch (err) {
+//         console.error('Error in downloadFile:', err);
+//     }
+// };
   const downloadFile = () => {
-    try {
-        // Create file content as Blob
-        const fileBlob = new Blob([this.state.fileContent], { type: 'text/plain' });
-        
-        // Create File object
-        const wayPointFile = new File([fileBlob], 'waypoint_plan.txt', { type: 'text/plain' });
-        
-        // Get the file input element
-        const fileInput = document.getElementById('btn_filesWP');
-        if (fileInput) {
-            // Create DataTransfer object
-            const dataTransfer = new DataTransfer();
-            dataTransfer.items.add(wayPointFile);
-            
-            // Update the files property
-            fileInput.files = dataTransfer.files;
-
-            // Trigger change event to ensure listeners are notified
-            const event = new Event('change', { bubbles: true });
-            fileInput.dispatchEvent(event);
-            
-            // Verify update
-            console.log('File input updated:', fileInput.files[0].name);
-            
-            // Store file content in a data attribute for later access
-            fileInput.setAttribute('data-file-content', this.state.fileContent);
-        }
-
-        // Download file
-        const downloadElement = document.createElement('a');
-        downloadElement.href = URL.createObjectURL(fileBlob);
-        downloadElement.download = 'waypoint_plan.txt';
-        document.body.appendChild(downloadElement);
-        downloadElement.click();
-        document.body.removeChild(downloadElement);
-
-    } catch (err) {
-        console.error('Error in downloadFile:', err);
-    }
-};
-  // const downloadFile = () => {
-  //   const element = document.createElement('a');
-  //   const file = new Blob([this.state.fileContent], { type: 'text/plain' });
-  //   element.href = URL.createObjectURL(file);
-  //   element.download = 'waypoint_plan.txt';
-  //   document.body.appendChild(element); // Required for this to work in FireFox
-  //   element.click();
-  // };
+    const element = document.createElement('a');
+    const file = new Blob([this.state.fileContent], { type: 'text/plain' });
+    element.href = URL.createObjectURL(file);
+    element.download = 'waypoint_plan.txt';
+    document.body.appendChild(element); // Required for this to work in FireFox
+    element.click();
+  };
 
 
   return (
