@@ -562,33 +562,40 @@ const handleDelay=(time)=>{
 
   // // Create and download the file
   const downloadFile = () => {
-    console.log('code is here');
-
     try {
-        const element = document.createElement('a');
-        const file = new Blob([this.state.fileContent], { type: 'text/plain' });
+        // Create file content as Blob
+        const fileBlob = new Blob([this.state.fileContent], { type: 'text/plain' });
         
-        const waypointInput = document.getElementById('btn_filesWP');
-        if (waypointInput) {
-            try {
-                const wayPointFile = new File([file], 'waypoint_plan.txt', { type: 'text/plain' });
-                const dataTransfer = new DataTransfer();
-                dataTransfer.items.add(wayPointFile);
-                waypointInput.files = dataTransfer.files;
-            } catch (err) {
-                console.log('Unable to set waypoint file programmatically:', err);
-                // Fall back to just downloading the file
-            }
+        // Create File object
+        const wayPointFile = new File([fileBlob], 'waypoint_plan.txt', { type: 'text/plain' });
+        
+        // Get the file input element
+        const fileInput = document.getElementById('btn_filesWP');
+        if (fileInput) {
+            // Create DataTransfer object to create FileList
+            const dataTransfer = new DataTransfer();
+            dataTransfer.items.add(wayPointFile);
+            
+            // Set the files property of input element
+            fileInput.files = dataTransfer.files;
+            
+            console.log('File attached to input:', fileInput.files); // Debug log
+        } else {
+            console.error('Could not find element with ID btn_filesWP');
         }
 
-        element.href = URL.createObjectURL(file);
-        element.download = 'waypoint_plan.txt';
-        document.body.appendChild(element);
-        element.click();
+        // Download file as before
+        const downloadElement = document.createElement('a');
+        downloadElement.href = URL.createObjectURL(fileBlob);
+        downloadElement.download = 'waypoint_plan.txt';
+        document.body.appendChild(downloadElement);
+        downloadElement.click();
+        document.body.removeChild(downloadElement);
+
     } catch (err) {
-        console.error('Error downloading waypoint file:', err);
+        console.error('Error in downloadFile:', err);
     }
-}
+};
   // const downloadFile = () => {
   //   const element = document.createElement('a');
   //   const file = new Blob([this.state.fileContent], { type: 'text/plain' });
