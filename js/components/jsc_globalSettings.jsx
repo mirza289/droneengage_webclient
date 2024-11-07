@@ -538,20 +538,20 @@ const handleDelay=(time)=>{
 
     // // Create text format for the waypoint
     //   take off waypoint 1
-    const takeoff = `1\t1\t0\t22\t0\t0\t0\t0\t0\t0\t${altitude}\t${autoContinue}\n`;
+    const takeoff = `1\t1\t0\t22\t0\t0\t0\t0\t0\t0\t${altitude}\t${autoContinue}\r\n`;
     waypointIndex=waypointIndex+1
 
     // destination waypoint 2
-    const waypointData = `${waypointIndex}\t${currentWP}\t${coordFrame}\t${command}\t${delayTime}\t0\t0\t0\t${latitude}\t${longitude}\t${altitude}\t${autoContinue}\n`;
+    const waypointData = `${waypointIndex}\t${currentWP}\t${coordFrame}\t${command}\t${delayTime}\t0\t0\t0\t${latitude}\t${longitude}\t${altitude}\t${autoContinue}\r\n`;
     console.log(waypointData)
     
     waypointIndex=waypointIndex+1
     // wait waypoint 3 
-    const deplayWaypoint = `3\t0\t3\t93\t30\t0\t0\t0\t0\t0\t0\t${autoContinue}\n`;
+    const deplayWaypoint = `3\t0\t3\t93\t30\t0\t0\t0\t0\t0\t0\t${autoContinue}\r\n`;
     waypointIndex=waypointIndex+1
 
     // RTL waypoint 
-    const rtlWaypoint = `4\t0\t3\t20\t0\t0\t0\t0\t0\t0\t0\t${autoContinue}\n`;
+    const rtlWaypoint = `4\t0\t3\t20\t0\t0\t0\t0\t0\t0\t0\t${autoContinue}\r\n`;
 
     // // Combine version and waypoint data
     const fullContent = version + takeoff + waypointData + deplayWaypoint + rtlWaypoint;
