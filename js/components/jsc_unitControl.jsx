@@ -1471,14 +1471,18 @@ class CLSS_AndruavUnitList extends React.Component {
     }
 
     logAndruavUnits() {
-        const andruavUnits = this.state.andruavUnitPartyIDs.map((partyID) => {
-            const unit = v_andruavClient.m_andruavUnitList.fn_getUnitByPartyID(partyID);
-            if (unit) {
+        const sortedPartyIDs = window.AndruavLibs.LocalStorage.fn_getUnitSortEnabled()
+            ? v_andruavClient.m_andruavUnitList.fn_getUnitsSortedBy_APID()
+            : v_andruavClient.m_andruavUnitList.fn_getUnitsSorted();
+    
+        const andruavUnits = sortedPartyIDs.map((object) => {
+            const v_andruavUnit = object[1];
+            if (v_andruavUnit) {
                 return {
-                    partyID: unit.partyID,
-                    unitName: unit.m_unitName,
-                    isGCS: unit.m_IsGCS,
-                    isArmed: unit.m_isArmed,
+                    partyID: v_andruavUnit.partyID,
+                    unitName: v_andruavUnit.m_unitName,
+                    isGCS: v_andruavUnit.m_IsGCS,
+                    isArmed: v_andruavUnit.m_isArmed,
                     // Add more fields as necessary
                 };
             }
@@ -1487,6 +1491,7 @@ class CLSS_AndruavUnitList extends React.Component {
     
         console.log("Andruav Units List:", andruavUnits);
     }
+    
     fn_onSocketStatus (me,params) {
        
         if (me._isMounted!==true) return ;
