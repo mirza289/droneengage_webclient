@@ -1460,11 +1460,33 @@ class CLSS_AndruavUnitList extends React.Component {
 
          if (me.state.andruavUnitPartyIDs.includes(p_andruavUnit.partyID)) return ;
          // http://stackoverflow.com/questions/26253351/correct-modification-of-state-arrays-in-reactjs      
-         me.setState({ 
-            andruavUnitPartyIDs: me.state.andruavUnitPartyIDs.concat([p_andruavUnit.partyID])
-        });
+         me.setState(
+            {
+                andruavUnitPartyIDs: me.state.andruavUnitPartyIDs.concat([p_andruavUnit.partyID])
+            },
+            () => {
+                me.logAndruavUnits();  // Log after state update
+            }
+        );
     }
 
+    logAndruavUnits() {
+        const andruavUnits = this.state.andruavUnitPartyIDs.map((partyID) => {
+            const unit = v_andruavClient.m_andruavUnitList.fn_getUnitByPartyID(partyID);
+            if (unit) {
+                return {
+                    partyID: unit.partyID,
+                    unitName: unit.m_unitName,
+                    isGCS: unit.m_IsGCS,
+                    isArmed: unit.m_isArmed,
+                    // Add more fields as necessary
+                };
+            }
+            return null;
+        }).filter(unit => unit !== null);  // Filter out any null values
+    
+        console.log("Andruav Units List:", andruavUnits);
+    }
     fn_onSocketStatus (me,params) {
        
         if (me._isMounted!==true) return ;
