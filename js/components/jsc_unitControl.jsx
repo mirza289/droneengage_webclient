@@ -1469,7 +1469,29 @@ class CLSS_AndruavUnitList extends React.Component {
             }
         );
     }
-
+    //   TODO: remove this log @sherry
+    // logAndruavUnits() {    
+    //     const sortedPartyIDs = window.AndruavLibs.LocalStorage.fn_getUnitSortEnabled()
+    //         ? v_andruavClient.m_andruavUnitList.fn_getUnitsSortedBy_APID()
+    //         : v_andruavClient.m_andruavUnitList.fn_getUnitsSorted();
+    
+    //     const andruavUnits = sortedPartyIDs.map((object) => {
+    //         const v_andruavUnit = object[1];
+    //         if (v_andruavUnit) {
+    //             return {
+    //                 partyID: v_andruavUnit.partyID,
+    //                 unitName: v_andruavUnit.m_unitName,
+    //                 isGCS: v_andruavUnit.m_IsGCS,
+    //                 isArmed: v_andruavUnit.m_isArmed,
+    //                 // Add more fields as necessary
+    //             };
+    //         }
+    //         return null;
+    //     }).filter(unit => unit !== null);  // Filter out any null values
+    
+    //     console.log("Andruav Units List:", andruavUnits);
+    // }
+    
     logAndruavUnits() {
         const sortedPartyIDs = window.AndruavLibs.LocalStorage.fn_getUnitSortEnabled()
             ? v_andruavClient.m_andruavUnitList.fn_getUnitsSortedBy_APID()
@@ -1478,20 +1500,15 @@ class CLSS_AndruavUnitList extends React.Component {
         const andruavUnits = sortedPartyIDs.map((object) => {
             const v_andruavUnit = object[1];
             if (v_andruavUnit) {
-                return {
-                    partyID: v_andruavUnit.partyID,
-                    unitName: v_andruavUnit.m_unitName,
-                    isGCS: v_andruavUnit.m_IsGCS,
-                    isArmed: v_andruavUnit.m_isArmed,
-                    // Add more fields as necessary
-                };
+                return v_andruavUnit;  // Return the full unit object
             }
             return null;
         }).filter(unit => unit !== null);  // Filter out any null values
     
-        console.log("Andruav Units List:", andruavUnits);
+        console.log("Full Andruav Units Details:", andruavUnits);
     }
     
+
     fn_onSocketStatus (me,params) {
        
         if (me._isMounted!==true) return ;
